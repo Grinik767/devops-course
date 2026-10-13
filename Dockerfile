@@ -1,11 +1,14 @@
 FROM python:3.14-slim
+
+ENV PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1
+
+RUN useradd --uid 10001 --no-create-home --shell /usr/sbin/nologin appuser
 WORKDIR /app
-RUN apt-get update
-RUN apt-get install -y gcc libpq-dev
-COPY . .
-RUN pip install -r App/requirements.txt
-RUN rm -rf /root/.cache/pip
-RUN apt-get remove -y gcc libpq-dev && apt-get autoremove -y
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
-WORKDIR /app/App
+COPY App/requirements.txt ./requirements.txt
+RUN pip install -r requirements.txt
+COPY --chown=appuser:appuser App/ .
+USER appuser
+EXPOSE 8000
 CMD ["python", "app.py"]
