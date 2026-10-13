@@ -1,0 +1,6 @@
+.env
+.idea/
+.check/
+backups/
+*.tar
+*.tar.gz

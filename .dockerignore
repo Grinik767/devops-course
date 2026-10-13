@@ -1,0 +1,8 @@
+.git
+.idea
+.env
+.check
+backups
+**/__pycache__
+*.tar
+*.tar.gz
